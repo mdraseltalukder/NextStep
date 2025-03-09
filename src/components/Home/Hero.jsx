@@ -3,7 +3,7 @@ import { Search } from "lucide-react";
 export default function Hero() {
   return (
     <div
-      className="w-full min-h-[450px] flex items-center relative overflow-hidden h-[90vh] dark:bg-gray-900 after:absolute after:w-full after:h-full dark:after:bg-gray-950/30 "
+      className="w-full min-h-[450px] flex items-center relative overflow-hidden h-[90vh] dark:bg-gray-900 after:absolute after:w-full after:h-full dark:after:bg-gray-950/60 "
       style={{
         backgroundImage: "url('images/banner-2.jpg')",
         backgroundPosition: "center",

@@ -1,5 +1,6 @@
 import { ArrowRight, Briefcase, UserRound } from "lucide-react";
 
+import Loader from "@/components/Loader";
 import { Button } from "@/components/ui/button";
 import {
   Card,
@@ -9,9 +10,40 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import { Link } from "react-router-dom";
+import { useUser } from "@clerk/clerk-react";
+import { useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 
 export default function Onboard() {
+  const { user, isLoaded } = useUser();
+  const navigate = useNavigate();
+  const navigateUser = (currentRole) => {
+    navigate(currentRole === "recruiter" ? "/postjob" : "/alljobs");
+  };
+
+  const handleUserRole = async (role) => {
+    await user
+      .update({
+        unsafeMetadata: {
+          role: role,
+        },
+      })
+      .then(() => {
+        console.log("role:", role);
+
+        setTimeout(() => navigateUser(role), 500);
+      });
+  };
+  // if role pawa jai tahole onboard page e asbe na
+  useEffect(() => {
+    if (isLoaded && user?.unsafeMetadata?.role) {
+      navigateUser(user.unsafeMetadata.role);
+    }
+  }, [user, isLoaded]);
+  if (!isLoaded) {
+    <Loader />;
+  }
+
   return (
     <div className="min-h-screen flex flex-col">
       <header className="border-b">
@@ -58,11 +90,13 @@ export default function Onboard() {
                 </ul>
               </CardContent>
               <CardFooter>
-                <Link to="/jobs" className="w-full">
-                  <Button size="lg" className="w-full">
-                    Continue as Recruiter
-                  </Button>
-                </Link>
+                <Button
+                  size="lg"
+                  className="w-full"
+                  onClick={() => handleUserRole("recruiter")}
+                >
+                  Continue as Recruiter
+                </Button>
               </CardFooter>
             </Card>
 
@@ -93,11 +127,13 @@ export default function Onboard() {
                 </ul>
               </CardContent>
               <CardFooter>
-                <Link to="/alljobs" className="w-full">
-                  <Button size="lg" className="w-full">
-                    Continue as Applicant
-                  </Button>
-                </Link>
+                <Button
+                  size="lg"
+                  className="w-full"
+                  onClick={() => handleUserRole("applicant")}
+                >
+                  Continue as Applicant
+                </Button>
               </CardFooter>
             </Card>
           </div>

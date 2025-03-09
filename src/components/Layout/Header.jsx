@@ -161,7 +161,7 @@ ${
                         <UserButton.Link
                           label="My Jobs"
                           labelIcon={<Briefcase size={20} />}
-                          href="/jobs"
+                          href="/myjobs"
                         />
                       </UserButton.MenuItems>
                     </UserButton>
